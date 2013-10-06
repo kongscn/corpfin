@@ -1,3 +1,8 @@
+/data/
+/log/
+/out/
+/temp/
+
 *.py[cod]
 
 # C extensions

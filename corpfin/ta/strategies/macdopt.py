@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-
-
 from __future__ import print_function, division
 
 from os.path import join
 import logging
 import time
 
-from numpy.core.records import fromrecords
+import pandas as pd
 
 import corpfin.datasource.online as ds
 from corpfin.util.config import DIRS
 from corpfin.ta.strategies.macd import MACD
-from corpfin.util.common import rec2csv
 
 
 logger = logging.getLogger(__name__)
@@ -29,10 +26,8 @@ def opt(products):
         recs += opt_single(model)
 
     time_end = time.time()
-    recs = fromrecords(recs, names=['code', 'nfast',
-                                    'nslow', 'nmacd', 'revenue'])
-    rec2csv(recs, join(DIRS['out'], 'opt.csv'))
-
+    recs = pd.DataFrame.from_records(recs, columns=['code', 'nfast', 'nslow', 'nmacd', 'revenue'])
+    recs.to_csv(join(DIRS['out'], 'opt.csv'), index=False)
     pst = time_end - time_start
 
     logger.info(('Total %s para combinations computed, '
